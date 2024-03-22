@@ -1,0 +1,8 @@
+layout: post
+title: "A new post"
+date: 2024-03-21 09:10:00 -0600
+categories: emacs test
+
+# New Emacs content
+
+This is a test, this is only a test.
