@@ -1,0 +1,98 @@
+#+title: go-ts-mode and eglot
+#+date: <2024-03-23 11:16>
+#+description: Emacs go development with treesitter and eglot
+#+filetags: emacs golang
+
+Since I've adopted Emacs 29, I wanted to try switching my Emacs go development
+from [[https://github.com/dominikh/go-mode.el][go-mode]] and [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]] to the built in [[https://lists.gnu.org/archive/html/emacs-devel/2022-11/msg01443.html][tree-sitter]] and built in
+[[https://git.savannah.gnu.org/cgit/emacs.git/commit/?id=83fbda715973f57dc49fe002d255ecaff8273154][eglot]].  This involved a few missteps and re-tries so I thought I'd
+write it down.
+
+** gopls Language Server
+I already had [[https://pkg.go.dev/golang.org/x/tools/gopls][gopls]] installed.  But if you are starting from scratch
+you need to have this installed.
+
+#+begin_src shell
+  go install golang.org/x/tools/gopls@latest
+#+end_src
+
+** eglot mode
+Because eglot is built-in you don't technically need this, but it
+makes it nice if you happen to use your emacs config on an older
+version
+
+#+begin_src emacs-lisp
+  (use-package eglot
+    :ensure t)
+#+end_src
+
+** Emacs tree-sitter support
+Emacs 29 has to be compiled with treesitter support.  Since I use
+[[https://github.com/d12frosted/homebrew-emacs-plus][emacs-plus]] to install Emacs on OS X, this "just worked" since I
+had installed treesitter libraries before I compiled Emacs.
+
+#+begin_src shell
+  brew install tree-sitter
+  brew tap d12frosted/emacs-plus
+  brew install emacs-plus@29 --with-xwidgets --with-poll --with-nobu417-big-sur-icon
+#+end_src
+
+** tree-sitter grammar and mode selection
+To use tree-sitter you need to have the grammar for the language
+installed and you need to use the tree-sitter aware major mode that
+matches the kind of file you are editing.  Luckily there is a package
+that helps with this called [[https://github.com/renzmann/treesit-auto][treesit-auto]].  With the config below, 
+you will be prompted to install the grammar if it doesn't exist
+already.
+
+#+begin_src emacs-lisp
+  (use-package treesit-auto
+  :ensure t
+  :custom
+  (treesit-auto-install 'prompt)
+  :config
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode))
+#+end_src
+
+** go-ts mode
+
+=go-ts-mode= has to turn on eglot and I prefer to have my editor do
+the equivalent of =goimports= and =go fmt= when I save a file.
+Getting the =goimports= to work required a little bit of work to get
+the order of =before-save-hook= correct.  [[https://github.com/joaotavora/eglot/issues/574#issuecomment-1401023985][This]] eglot issue had some
+nice pointers.
+
+#+begin_src emacs-lisp
+  (defun my-eglot-organize-imports () (interactive)
+	 (eglot-code-actions nil nil "source.organizeImports" t))
+  (add-hook 'go-ts-mode-hook
+	    (lambda () (add-hook 'before-save-hook 'my-eglot-organize-imports nil 'local)))
+  (add-hook 'go-ts-mode-hook
+	    (lambda () (add-hook 'before-save-hook 'eglot-format-buffer)))
+  (add-hook 'go-ts-mode-hook 'eglot-ensure)
+#+end_src
+
+** eldoc mode
+eglot uses eldoc to display function help, which is fine, but by
+default it can take up a lot of space.  So this limits it to 2 lines.
+
+#+begin_src emacs-lisp
+  (require 'eldoc)
+  (setq eldoc-echo-area-use-multiline-p 2)
+#+end_src
+
+** company mode
+I was using company mode before for code completion, so this isn't a
+change. Adding it here for completeness of a go programming
+environment.
+#+BEGIN_SRC emacs-lisp
+  (use-package company
+    :ensure t
+    :config
+    (setq company-idle-delay 10)
+    (setq company-minimum-prefix-length 2)
+    (setq company-dabbrev-downcase nil)
+    (add-hook 'after-init-hook 'global-company-mode)
+    (global-set-key (kbd "M-/") #'company-complete))
+#+END_SRC
