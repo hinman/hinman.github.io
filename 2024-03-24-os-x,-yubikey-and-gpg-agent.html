@@ -2,11 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="description" content="launch gpg-agent on OS X to handle Yubikey ssh key management">
 <link rel="alternate"
       type="application/rss+xml"
       href="https://hinman.github.io/rss.xml"
       title="RSS feed for https://hinman.github.io/">
-<title>Lee E. Hinman's Blog</title>
+<title>OS X, Yubikey and gpg-agent</title>
 <meta name="author" content="Lee E. Hinman">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="initial-scale=1,width=device-width,minimum-scale=1">
@@ -17,8 +18,6 @@
   <a href="https://hinman.github.io">Lee E. Hinman's Blog</a>
 </div></div>
 <div id="content">
-<h1>Welcome</h1>
-
 <div class="post-date">24 Mar 2024</div><h1 class="post-title"><a href="https://hinman.github.io/2024-03-24-os-x,-yubikey-and-gpg-agent.html">OS X, Yubikey and gpg-agent</a></h1>
 <p>
 Since I store my <a href="https://github.com/drduh/YubiKey-Guide">SSH private key on my Yubikey</a>, I need to launch
@@ -97,155 +96,7 @@ get stuck.  So I have the following script I keep in
 /bin/launchctl kickstart -k gui/${<span style="color: #eab700;">UID</span>}/link-ssh-auth-sock
 </pre>
 </div>
-<div class="taglist"><a href="https://hinman.github.io/tags.html">Tags</a>: <a href="https://hinman.github.io/tag-os_x.html">os_x</a> <a href="https://hinman.github.io/tag-yubikey.html">yubikey</a> </div>
-<div class="post-date">23 Mar 2024</div><h1 class="post-title"><a href="https://hinman.github.io/2024-03-23-go-ts-mode-and-eglot.html">go-ts-mode and eglot</a></h1>
-<p>
-Since I've adopted Emacs 29, I wanted to try switching my Emacs go development
-from <a href="https://github.com/dominikh/go-mode.el">go-mode</a> and <a href="https://github.com/emacs-lsp/lsp-mode">lsp-mode</a> to the built in <a href="https://lists.gnu.org/archive/html/emacs-devel/2022-11/msg01443.html">tree-sitter</a> and built in
-<a href="https://git.savannah.gnu.org/cgit/emacs.git/commit/?id=83fbda715973f57dc49fe002d255ecaff8273154">eglot</a>.  This involved a few missteps and re-tries so I thought I'd
-write it down.
-</p>
-
-<div id="outline-container-orge79be3d" class="outline-2">
-<h2 id="orge79be3d">gopls Language Server</h2>
-<div class="outline-text-2" id="text-orge79be3d">
-<p>
-I already had <a href="https://pkg.go.dev/golang.org/x/tools/gopls">gopls</a> installed.  But if you are starting from scratch
-you need to have this installed.
-</p>
-
-<div class="org-src-container">
-<pre class="src src-shell">go install golang.org/x/tools/gopls@latest
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org011b591" class="outline-2">
-<h2 id="org011b591">eglot mode</h2>
-<div class="outline-text-2" id="text-org011b591">
-<p>
-Because eglot is built-in you don't technically need this, but it
-makes it nice if you happen to use your emacs config on an older
-version
-</p>
-
-<div class="org-src-container">
-<pre class="src src-emacs-lisp">(use-package eglot
-  :ensure t)
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org10f58fc" class="outline-2">
-<h2 id="org10f58fc">Emacs tree-sitter support</h2>
-<div class="outline-text-2" id="text-org10f58fc">
-<p>
-Emacs 29 has to be compiled with treesitter support.  Since I use
-<a href="https://github.com/d12frosted/homebrew-emacs-plus">emacs-plus</a> to install Emacs on OS X, this "just worked" since I
-had installed treesitter libraries before I compiled Emacs.
-</p>
-
-<div class="org-src-container">
-<pre class="src src-shell">brew install tree-sitter
-brew tap d12frosted/emacs-plus
-brew install emacs-plus@29 --with-xwidgets --with-poll --with-nobu417-big-sur-icon
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org3459abf" class="outline-2">
-<h2 id="org3459abf">tree-sitter grammar and mode selection</h2>
-<div class="outline-text-2" id="text-org3459abf">
-<p>
-To use tree-sitter you need to have the grammar for the language
-installed and you need to use the tree-sitter aware major mode that
-matches the kind of file you are editing.  Luckily there is a package
-that helps with this called <a href="https://github.com/renzmann/treesit-auto">treesit-auto</a>.  With the config below, 
-you will be prompted to install the grammar if it doesn't exist
-already.
-</p>
-
-<div class="org-src-container">
-<pre class="src src-emacs-lisp">(use-package treesit-auto
-  :ensure t
-  :custom
-  (treesit-auto-install 'prompt)
-  :config
-  (treesit-auto-add-to-auto-mode-alist 'all)
-  (global-treesit-auto-mode))
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgc64cfa7" class="outline-2">
-<h2 id="orgc64cfa7">go-ts mode</h2>
-<div class="outline-text-2" id="text-orgc64cfa7">
-<p>
-<code>go-ts-mode</code> has to turn on eglot and I prefer to have my editor do
-the equivalent of <code>goimports</code> and <code>go fmt</code> when I save a file.
-Getting the <code>goimports</code> to work required a little bit of work to get
-the order of <code>before-save-hook</code> correct.  <a href="https://github.com/joaotavora/eglot/issues/574#issuecomment-1401023985">This</a> eglot issue had some
-nice pointers.
-</p>
-
-<div class="org-src-container">
-<pre class="src src-emacs-lisp">(defun my-eglot-organize-imports () (interactive)
-       (eglot-code-actions nil nil "source.organizeImports" t))
-(add-hook 'go-ts-mode-hook
-          (lambda () (add-hook 'before-save-hook 'my-eglot-organize-imports nil 'local)))
-(add-hook 'go-ts-mode-hook
-          (lambda () (add-hook 'before-save-hook 'eglot-format-buffer)))
-(add-hook 'go-ts-mode-hook 'eglot-ensure)
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org2c9ae03" class="outline-2">
-<h2 id="org2c9ae03">eldoc mode</h2>
-<div class="outline-text-2" id="text-org2c9ae03">
-<p>
-eglot uses eldoc to display function help, which is fine, but by
-default it can take up a lot of space.  So this limits it to 2 lines.
-</p>
-
-<div class="org-src-container">
-<pre class="src src-emacs-lisp">(require 'eldoc)
-(setq eldoc-echo-area-use-multiline-p 2)
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org9866571" class="outline-2">
-<h2 id="org9866571">company mode</h2>
-<div class="outline-text-2" id="text-org9866571">
-<p>
-I was using company mode before for code completion, so this isn't a
-change. Adding it here for completeness of a go programming
-environment.
-</p>
-<div class="org-src-container">
-<pre class="src src-emacs-lisp">(use-package company
-  :ensure t
-  :config
-  (setq company-idle-delay 10)
-  (setq company-minimum-prefix-length 2)
-  (setq company-dabbrev-downcase nil)
-  (add-hook 'after-init-hook 'global-company-mode)
-  (global-set-key (kbd "M-/") #'company-complete))
-</pre>
-</div>
-</div>
-</div>
-<div class="taglist"><a href="https://hinman.github.io/tags.html">Tags</a>: <a href="https://hinman.github.io/tag-emacs.html">emacs</a> <a href="https://hinman.github.io/tag-golang.html">golang</a> </div><div id="archive">
-<a href="https://hinman.github.io/archive.html">Other posts</a>
-</div>
-</div>
+<div class="taglist"><a href="https://hinman.github.io/tags.html">Tags</a>: <a href="https://hinman.github.io/tag-os_x.html">os_x</a> <a href="https://hinman.github.io/tag-yubikey.html">yubikey</a> </div></div>
 <div id="postamble" class="status"><div id="archive">
   <a href="https://hinman.github.io/archive.html">Other posts</a>
 </div>

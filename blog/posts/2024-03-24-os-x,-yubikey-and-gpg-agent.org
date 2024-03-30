@@ -1,0 +1,71 @@
+#+title: OS X, Yubikey and gpg-agent
+#+date: <2024-03-24 17:29>
+#+description: launch gpg-agent on OS X to handle Yubikey ssh key management
+#+filetags: os_x yubikey
+
+Since I store my [[https://github.com/drduh/YubiKey-Guide][SSH private key on my Yubikey]], I need to launch
+=gpg-agent= and replace the value of the =SSH_AUTH_SOCK= environment
+variable to point to the =gpg-agent= socket.
+
+So at boot time I need =gpg-agent= to start.  That is handled with
+the following LaunchAgent script stored in
+=~/Library/LaunchAgents/homebrew.gpg.gpg-agent.plist=
+
+#+begin_src xml
+  <?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+  <plist version="1.0">
+  <dict>
+    <!-- Sets a name for a task -->
+    <key>Label</key>
+    <string>homebrew.gpg.gpg-agent</string>
+    <!-- Sets a command to run and its options -->
+    <key>ProgramArguments</key>
+    <array>
+      <string>/opt/homebrew/bin/gpgconf</string>
+      <string>--launch</string>
+      <string>gpg-agent</string>
+    </array>
+    <!-- Tells it to run the task once the XML is loaded -->
+    <key>RunAtLoad</key>
+    <true/>
+  </dict>
+  </plist>
+#+end_src
+
+Now that =gpg-agent= is started I need to replace the =SSH_AUTH_SOCK=
+environment variable.  That is handled with the following LaunchAgent
+script stored in =~/Library/LaunchAgents/link-ssh-auth-sock.plist=
+
+#+begin_src xml
+  <?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+  <plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>link-ssh-auth-sock</string>
+    <key>ProgramArguments</key>
+    <array>
+      <string>/bin/sh</string>
+      <string>-c</string>
+      <string>/bin/ln -sf $HOME/.gnupg/S.gpg-agent.ssh $SSH_AUTH_SOCK</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+  </dict>
+  </plist>
+#+end_src
+
+Now when I login, =gpg-agent= will be started and ssh will get it's
+private keys from YubiKey.  The only problem is, occasionally when OS
+X resumes from sleep or multiple people log in, =gpg-agent= can die or
+get stuck.  So I have the following script I keep in
+=~/bin/gpg_restart.sh=  This will restart =gpg-agent= and re-link
+=SSH_AUTH_SOCK= using the LaunchAgent scripts.
+
+#+begin_src shell
+  #!/bin/sh
+
+  /bin/launchctl kickstart -k gui/${UID}/homebrew.gpg.gpg-agent
+  /bin/launchctl kickstart -k gui/${UID}/link-ssh-auth-sock
+#+end_src

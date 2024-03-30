@@ -4,7 +4,94 @@
 <title><![CDATA[Lee E. Hinman's Blog]]></title>
 <description><![CDATA[Lee E. Hinman's Blog]]></description>
 <link>https://hinman.github.io/</link>
-<lastBuildDate>Sat, 23 Mar 2024 13:20:30 -0500</lastBuildDate>
+<lastBuildDate>Sat, 30 Mar 2024 15:27:21 -0500</lastBuildDate>
+<item>
+  <title><![CDATA[OS X, Yubikey and gpg-agent]]></title>
+  <description><![CDATA[
+<p>
+Since I store my <a href="https://github.com/drduh/YubiKey-Guide">SSH private key on my Yubikey</a>, I need to launch
+<code>gpg-agent</code> and replace the value of the <code>SSH_AUTH_SOCK</code> environment
+variable to point to the <code>gpg-agent</code> socket.
+</p>
+
+<p>
+So at boot time I need <code>gpg-agent</code> to start.  That is handled with
+the following LaunchAgent script stored in
+<code>~/Library/LaunchAgents/homebrew.gpg.gpg-agent.plist</code>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-xml">&lt;?<span style="color: #718c00;">xml</span> <span style="color: #8959a8;">version="1.0" encoding="UTF-8"</span>?&gt;
+&lt;!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"&gt;
+&lt;<span style="color: #f5871f;">plist</span> <span style="color: #eab700;">version</span>=<span style="color: #3e999f;">"1.0"</span>&gt;
+&lt;<span style="color: #f5871f;">dict</span>&gt;
+  <span style="color: #8e908c; font-style: italic;">&lt;!-- </span><span style="color: #8e908c; font-style: italic;">Sets a name for a task</span><span style="color: #8e908c; font-style: italic;"> --&gt;</span>
+  &lt;<span style="color: #f5871f;">key</span>&gt;Label&lt;/<span style="color: #f5871f;">key</span>&gt;
+  &lt;<span style="color: #f5871f;">string</span>&gt;homebrew.gpg.gpg-agent&lt;/<span style="color: #f5871f;">string</span>&gt;
+  <span style="color: #8e908c; font-style: italic;">&lt;!-- </span><span style="color: #8e908c; font-style: italic;">Sets a command to run and its options</span><span style="color: #8e908c; font-style: italic;"> --&gt;</span>
+  &lt;<span style="color: #f5871f;">key</span>&gt;ProgramArguments&lt;/<span style="color: #f5871f;">key</span>&gt;
+  &lt;<span style="color: #f5871f;">array</span>&gt;
+    &lt;<span style="color: #f5871f;">string</span>&gt;/opt/homebrew/bin/gpgconf&lt;/<span style="color: #f5871f;">string</span>&gt;
+    &lt;<span style="color: #f5871f;">string</span>&gt;--launch&lt;/<span style="color: #f5871f;">string</span>&gt;
+    &lt;<span style="color: #f5871f;">string</span>&gt;gpg-agent&lt;/<span style="color: #f5871f;">string</span>&gt;
+  &lt;/<span style="color: #f5871f;">array</span>&gt;
+  <span style="color: #8e908c; font-style: italic;">&lt;!-- </span><span style="color: #8e908c; font-style: italic;">Tells it to run the task once the XML is loaded</span><span style="color: #8e908c; font-style: italic;"> --&gt;</span>
+  &lt;<span style="color: #f5871f;">key</span>&gt;RunAtLoad&lt;/<span style="color: #f5871f;">key</span>&gt;
+  &lt;<span style="color: #f5871f;">true</span>/&gt;
+&lt;/<span style="color: #f5871f;">dict</span>&gt;
+&lt;/<span style="color: #f5871f;">plist</span>&gt;
+</pre>
+</div>
+
+<p>
+Now that <code>gpg-agent</code> is started I need to replace the <code>SSH_AUTH_SOCK</code>
+environment variable.  That is handled with the following LaunchAgent
+script stored in <code>~/Library/LaunchAgents/link-ssh-auth-sock.plist</code>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-xml">&lt;?<span style="color: #718c00;">xml</span> <span style="color: #8959a8;">version="1.0" encoding="UTF-8"</span>?&gt;
+&lt;!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"&gt;
+&lt;<span style="color: #f5871f;">plist</span> <span style="color: #eab700;">version</span>=<span style="color: #3e999f;">"1.0"</span>&gt;
+&lt;<span style="color: #f5871f;">dict</span>&gt;
+  &lt;<span style="color: #f5871f;">key</span>&gt;Label&lt;/<span style="color: #f5871f;">key</span>&gt;
+  &lt;<span style="color: #f5871f;">string</span>&gt;link-ssh-auth-sock&lt;/<span style="color: #f5871f;">string</span>&gt;
+  &lt;<span style="color: #f5871f;">key</span>&gt;ProgramArguments&lt;/<span style="color: #f5871f;">key</span>&gt;
+  &lt;<span style="color: #f5871f;">array</span>&gt;
+    &lt;<span style="color: #f5871f;">string</span>&gt;/bin/sh&lt;/<span style="color: #f5871f;">string</span>&gt;
+    &lt;<span style="color: #f5871f;">string</span>&gt;-c&lt;/<span style="color: #f5871f;">string</span>&gt;
+    &lt;<span style="color: #f5871f;">string</span>&gt;/bin/ln -sf $HOME/.gnupg/S.gpg-agent.ssh $SSH_AUTH_SOCK&lt;/<span style="color: #f5871f;">string</span>&gt;
+  &lt;/<span style="color: #f5871f;">array</span>&gt;
+  &lt;<span style="color: #f5871f;">key</span>&gt;RunAtLoad&lt;/<span style="color: #f5871f;">key</span>&gt;
+  &lt;<span style="color: #f5871f;">true</span>/&gt;
+&lt;/<span style="color: #f5871f;">dict</span>&gt;
+&lt;/<span style="color: #f5871f;">plist</span>&gt;
+</pre>
+</div>
+
+<p>
+Now when I login, <code>gpg-agent</code> will be started and ssh will get it's
+private keys from YubiKey.  The only problem is, occasionally when OS
+X resumes from sleep or multiple people log in, <code>gpg-agent</code> can die or
+get stuck.  So I have the following script I keep in
+<code>~/bin/gpg_restart.sh</code>  This will restart <code>gpg-agent</code> and re-link
+<code>SSH_AUTH_SOCK</code> using the LaunchAgent scripts.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell"><span style="color: #8e908c; font-style: italic;">#</span><span style="color: #8e908c; font-style: italic;">!/bin/</span><span style="color: #718c00;">sh</span>
+
+/bin/launchctl kickstart -k gui/${<span style="color: #eab700;">UID</span>}/homebrew.gpg.gpg-agent
+/bin/launchctl kickstart -k gui/${<span style="color: #eab700;">UID</span>}/link-ssh-auth-sock
+</pre>
+</div>
+<div class="taglist"><a href="https://hinman.github.io/tags.html">Tags</a>: <a href="https://hinman.github.io/tag-os_x.html">os_x</a> <a href="https://hinman.github.io/tag-yubikey.html">yubikey</a> </div>]]></description>
+  <category><![CDATA[os_x]]></category>
+  <category><![CDATA[yubikey]]></category>
+  <link>https://hinman.github.io/2024-03-24-os-x,-yubikey-and-gpg-agent.html</link>
+  <guid>https://hinman.github.io/2024-03-24-os-x,-yubikey-and-gpg-agent.html</guid>
+  <pubDate>Sun, 24 Mar 2024 17:29:00 -0500</pubDate>
+</item>
 <item>
   <title><![CDATA[go-ts-mode and eglot]]></title>
   <description><![CDATA[
