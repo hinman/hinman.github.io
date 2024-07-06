@@ -4,7 +4,34 @@
 <title><![CDATA[Lee E. Hinman's Blog]]></title>
 <description><![CDATA[Lee E. Hinman's Blog]]></description>
 <link>https://hinman.github.io/</link>
-<lastBuildDate>Sat, 30 Mar 2024 15:27:21 -0500</lastBuildDate>
+<lastBuildDate>Sat, 06 Jul 2024 10:30:00 -0500</lastBuildDate>
+<item>
+  <title><![CDATA[troff resources]]></title>
+  <description><![CDATA[
+<p>
+I've been on a quest to reduce my dependence on LaTeX.
+This isn't because LaTeX produces "bad" looking documents, on the
+contrary they are usually quite beautiful.  The "problem" is that the
+MacTex or TexLive distributions are quite large and compiling documents is
+rather slow.  <code>groff</code> is able to do most of what I want and is already
+available on my Linux/FreeBSD/OS X systems.  But the <code>groff</code>
+documentation is a little sparse, so additional resources are required.
+</p>
+
+<dl class="org-dl">
+<dt><a href="https://github.com/larrykollar/Unix-Text-Processing">Unix Text Processing</a></dt><dd>Does a pretty good job at being an
+introductory text into troff, tbl, eqn, pic and macros</dd>
+<dt><a href="https://n-t-roff.github.io/heirloom/doctools/troff.pdf">Heirloom Nroff/Troff User's Manual</a></dt><dd>This is more of a reference
+document, but it does have a good tutorial section as well</dd>
+<dt><a href="https://www.schaffter.ca/mom/momdoc/toc.html">MOM macros</a></dt><dd>This is a "modern" macro set, and in general it does a
+very good job producing PDFs</dd>
+</dl>
+<div class="taglist"><a href="https://hinman.github.io/tags.html">Tags</a>: <a href="https://hinman.github.io/tag-troff.html">troff</a> </div>]]></description>
+  <category><![CDATA[troff]]></category>
+  <link>https://hinman.github.io/2024-07-06-troff-resources.html</link>
+  <guid>https://hinman.github.io/2024-07-06-troff-resources.html</guid>
+  <pubDate>Sat, 06 Jul 2024 10:01:00 -0500</pubDate>
+</item>
 <item>
   <title><![CDATA[OS X, Yubikey and gpg-agent]]></title>
   <description><![CDATA[

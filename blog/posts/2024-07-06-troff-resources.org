@@ -1,0 +1,20 @@
+#+title: troff resources
+#+date: <2024-07-06 10:01>
+#+description: resources for running troff
+#+filetags: troff
+
+I've been on a quest to reduce my dependence on LaTeX.
+This isn't because LaTeX produces "bad" looking documents, on the
+contrary they are usually quite beautiful.  The "problem" is that the
+MacTex or TexLive distributions are quite large and compiling documents is
+rather slow.  =groff= is able to do most of what I want and is already
+available on my Linux/FreeBSD/OS X systems.  But the =groff=
+documentation is a little sparse, so additional resources are required.
+
+- [[https://github.com/larrykollar/Unix-Text-Processing][Unix Text Processing]] :: Does a pretty good job at being an
+  introductory text into troff, tbl, eqn, pic and macros
+- [[https://n-t-roff.github.io/heirloom/doctools/troff.pdf][Heirloom Nroff/Troff User's Manual]] :: This is more of a reference
+  document, but it does have a good tutorial section as well
+- [[https://www.schaffter.ca/mom/momdoc/toc.html][MOM macros]] :: This is a "modern" macro set, and in general it does a
+  very good job producing PDFs
+
