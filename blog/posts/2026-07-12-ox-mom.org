@@ -1,0 +1,17 @@
+#+title: ox-mom
+#+date: <2026-07-12 16:09>
+#+description: Building an Org Mode export backend for groff/MOM as a lighter alternative to LaTeX.
+#+filetags: Emacs "Org Mode" groff
+
+I've been trying to get away from LaTeX for PDF output from Emacs Org
+Mode for a while.  Not that the LaTeX output was bad, it was just
+that maintaining a working LaTeX install ends up being a pain for
+something I only use occasionally.
+
+With some help from Claude, I was able to get an
+Org Mode export backend working for groff and the MOM macro set.  The
+code is at [[https://github.com/hinman/ox-mom][ox-mom on GitHub]].  Groff and MOM are
+already installed on most of the machines I work on, and if I do have
+to install it, it is much smaller than a fully functioning LaTeX
+install.  The output quality has been good so far, and I'm happy to
+have one less thing to maintain.

@@ -17,27 +17,25 @@
   <a href="https://hinman.github.io">Lee E. Hinman's Blog</a>
 </div></div>
 <div id="content">
-<h1 class="title">Posts tagged "troff":</h1>
-<div class="post-date">06 Jul 2024</div><h1 class="post-title"><a href="https://hinman.github.io/2024-07-06-troff-resources.html">troff resources</a></h1>
+<h1 class="title">Posts tagged "Mode"":</h1>
+<div class="post-date">12 Jul 2026</div><h1 class="post-title"><a href="https://hinman.github.io/2026-07-12-ox-mom.html">ox-mom</a></h1>
 <p>
-I've been on a quest to reduce my dependence on LaTeX.
-This isn't because LaTeX produces "bad" looking documents, on the
-contrary they are usually quite beautiful.  The "problem" is that the
-MacTex or TexLive distributions are quite large and compiling documents is
-rather slow.  <code>groff</code> is able to do most of what I want and is already
-available on my Linux/FreeBSD/OS X systems.  But the <code>groff</code>
-documentation is a little sparse, so additional resources are required.
+I've been trying to get away from LaTeX for PDF output from Emacs Org
+Mode for a while.  Not that the LaTeX output was bad, it was just
+that maintaining a working LaTeX install ends up being a pain for
+something I only use occasionally.
 </p>
 
-<dl class="org-dl">
-<dt><a href="https://github.com/larrykollar/Unix-Text-Processing">Unix Text Processing</a></dt><dd>Does a pretty good job at being an
-introductory text into troff, tbl, eqn, pic and macros</dd>
-<dt><a href="https://n-t-roff.github.io/heirloom/doctools/troff.pdf">Heirloom Nroff/Troff User's Manual</a></dt><dd>This is more of a reference
-document, but it does have a good tutorial section as well</dd>
-<dt><a href="https://www.schaffter.ca/mom/momdoc/toc.html">MOM macros</a></dt><dd>This is a "modern" macro set, and in general it does a
-very good job producing PDFs</dd>
-</dl>
-<div class="taglist"><a href="https://hinman.github.io/tags.html"><span class="tag-label">Tags</span></a><span class="tag-separator">: </span><span class="taglist__tags"><a href="https://hinman.github.io/tag-troff.html" class="tag" data-tag="troff" data-index="0">troff</a> </span></div><div id="archive">
+<p>
+With some help from Claude, I was able to get an
+Org Mode export backend working for groff and the MOM macro set.  The
+code is at <a href="https://github.com/hinman/ox-mom">ox-mom on GitHub</a>.  Groff and MOM are
+already installed on most of the machines I work on, and if I do have
+to install it, it is much smaller than a fully functioning LaTeX
+install.  The output quality has been good so far, and I'm happy to
+have one less thing to maintain.
+</p>
+<div class="taglist"><a href="https://hinman.github.io/tags.html"><span class="tag-label">Tags</span></a><span class="tag-separator">: </span><span class="taglist__tags"><a href="https://hinman.github.io/tag-emacs.html" class="tag" data-tag="emacs" data-index="0">Emacs</a> <a href="https://hinman.github.io/tag-"org.html" class="tag" data-tag=""org" data-index="1">"Org</a> <a href="https://hinman.github.io/tag-mode".html" class="tag" data-tag="mode"" data-index="2">Mode"</a> <a href="https://hinman.github.io/tag-groff.html" class="tag" data-tag="groff" data-index="3">groff</a> </span></div><div id="archive">
 <a href="https://hinman.github.io/archive.html">Other posts</a>
 </div>
 </div>

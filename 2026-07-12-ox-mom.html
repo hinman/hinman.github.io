@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="Building an Org Mode export backend for groff/MOM as a lighter alternative to LaTeX.">
+<link rel="alternate"
+      type="application/rss+xml"
+      href="https://hinman.github.io/rss.xml"
+      title="RSS feed for https://hinman.github.io/">
+<title>ox-mom</title>
+<meta name="author" content="Lee E. Hinman">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="initial-scale=1,width=device-width,minimum-scale=1">
+<link href= "static/style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="static/favicon.ico"></head>
+<body>
+<div id="preamble" class="status"><div class="header">
+  <a href="https://hinman.github.io">Lee E. Hinman's Blog</a>
+</div></div>
+<div id="content">
+<div class="post-date">12 Jul 2026</div><h1 class="post-title"><a href="https://hinman.github.io/2026-07-12-ox-mom.html">ox-mom</a></h1>
+<p>
+I've been trying to get away from LaTeX for PDF output from Emacs Org
+Mode for a while.  Not that the LaTeX output was bad, it was just
+that maintaining a working LaTeX install ends up being a pain for
+something I only use occasionally.
+</p>
+
+<p>
+With some help from Claude, I was able to get an
+Org Mode export backend working for groff and the MOM macro set.  The
+code is at <a href="https://github.com/hinman/ox-mom">ox-mom on GitHub</a>.  Groff and MOM are
+already installed on most of the machines I work on, and if I do have
+to install it, it is much smaller than a fully functioning LaTeX
+install.  The output quality has been good so far, and I'm happy to
+have one less thing to maintain.
+</p>
+<div class="taglist"><a href="https://hinman.github.io/tags.html"><span class="tag-label">Tags</span></a><span class="tag-separator">: </span><span class="taglist__tags"><a href="https://hinman.github.io/tag-emacs.html" class="tag" data-tag="emacs" data-index="0">Emacs</a> <a href="https://hinman.github.io/tag-"org.html" class="tag" data-tag=""org" data-index="1">"Org</a> <a href="https://hinman.github.io/tag-mode".html" class="tag" data-tag="mode"" data-index="2">Mode"</a> <a href="https://hinman.github.io/tag-groff.html" class="tag" data-tag="groff" data-index="3">groff</a> </span></div></div>
+<div id="postamble" class="status"><div id="archive">
+  <a href="https://hinman.github.io/archive.html">Other posts</a>
+</div>
+<center><a rel="license" href="https://creativecommons.org/licenses/by-sa/3.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a><br /><span xmlns:dct="https://purl.org/dc/terms/" href="https://purl.org/dc/dcmitype/Text" property="dct:title" rel="dct:type">hinman.github.io</span> by <a xmlns:cc="https://creativecommons.org/ns#" href="https://hinman.github.io" property="cc:attributionName" rel="cc:attributionURL">Lee E. Hinman</a> is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.</center></div>
+</body>
+</html>

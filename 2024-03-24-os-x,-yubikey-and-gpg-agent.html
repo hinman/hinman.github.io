@@ -32,25 +32,25 @@ the following LaunchAgent script stored in
 </p>
 
 <div class="org-src-container">
-<pre class="src src-xml">&lt;?<span style="color: #718c00;">xml</span> <span style="color: #8959a8;">version="1.0" encoding="UTF-8"</span>?&gt;
+<pre class="src src-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"&gt;
-&lt;<span style="color: #f5871f;">plist</span> <span style="color: #eab700;">version</span>=<span style="color: #3e999f;">"1.0"</span>&gt;
-&lt;<span style="color: #f5871f;">dict</span>&gt;
-  <span style="color: #8e908c; font-style: italic;">&lt;!-- </span><span style="color: #8e908c; font-style: italic;">Sets a name for a task</span><span style="color: #8e908c; font-style: italic;"> --&gt;</span>
-  &lt;<span style="color: #f5871f;">key</span>&gt;Label&lt;/<span style="color: #f5871f;">key</span>&gt;
-  &lt;<span style="color: #f5871f;">string</span>&gt;homebrew.gpg.gpg-agent&lt;/<span style="color: #f5871f;">string</span>&gt;
-  <span style="color: #8e908c; font-style: italic;">&lt;!-- </span><span style="color: #8e908c; font-style: italic;">Sets a command to run and its options</span><span style="color: #8e908c; font-style: italic;"> --&gt;</span>
-  &lt;<span style="color: #f5871f;">key</span>&gt;ProgramArguments&lt;/<span style="color: #f5871f;">key</span>&gt;
-  &lt;<span style="color: #f5871f;">array</span>&gt;
-    &lt;<span style="color: #f5871f;">string</span>&gt;/opt/homebrew/bin/gpgconf&lt;/<span style="color: #f5871f;">string</span>&gt;
-    &lt;<span style="color: #f5871f;">string</span>&gt;--launch&lt;/<span style="color: #f5871f;">string</span>&gt;
-    &lt;<span style="color: #f5871f;">string</span>&gt;gpg-agent&lt;/<span style="color: #f5871f;">string</span>&gt;
-  &lt;/<span style="color: #f5871f;">array</span>&gt;
-  <span style="color: #8e908c; font-style: italic;">&lt;!-- </span><span style="color: #8e908c; font-style: italic;">Tells it to run the task once the XML is loaded</span><span style="color: #8e908c; font-style: italic;"> --&gt;</span>
-  &lt;<span style="color: #f5871f;">key</span>&gt;RunAtLoad&lt;/<span style="color: #f5871f;">key</span>&gt;
-  &lt;<span style="color: #f5871f;">true</span>/&gt;
-&lt;/<span style="color: #f5871f;">dict</span>&gt;
-&lt;/<span style="color: #f5871f;">plist</span>&gt;
+&lt;plist version="1.0"&gt;
+&lt;dict&gt;
+  &lt;!-- Sets a name for a task --&gt;
+  &lt;key&gt;Label&lt;/key&gt;
+  &lt;string&gt;homebrew.gpg.gpg-agent&lt;/string&gt;
+  &lt;!-- Sets a command to run and its options --&gt;
+  &lt;key&gt;ProgramArguments&lt;/key&gt;
+  &lt;array&gt;
+    &lt;string&gt;/opt/homebrew/bin/gpgconf&lt;/string&gt;
+    &lt;string&gt;--launch&lt;/string&gt;
+    &lt;string&gt;gpg-agent&lt;/string&gt;
+  &lt;/array&gt;
+  &lt;!-- Tells it to run the task once the XML is loaded --&gt;
+  &lt;key&gt;RunAtLoad&lt;/key&gt;
+  &lt;true/&gt;
+&lt;/dict&gt;
+&lt;/plist&gt;
 </pre>
 </div>
 
@@ -61,22 +61,22 @@ script stored in <code>~/Library/LaunchAgents/link-ssh-auth-sock.plist</code>
 </p>
 
 <div class="org-src-container">
-<pre class="src src-xml">&lt;?<span style="color: #718c00;">xml</span> <span style="color: #8959a8;">version="1.0" encoding="UTF-8"</span>?&gt;
+<pre class="src src-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"&gt;
-&lt;<span style="color: #f5871f;">plist</span> <span style="color: #eab700;">version</span>=<span style="color: #3e999f;">"1.0"</span>&gt;
-&lt;<span style="color: #f5871f;">dict</span>&gt;
-  &lt;<span style="color: #f5871f;">key</span>&gt;Label&lt;/<span style="color: #f5871f;">key</span>&gt;
-  &lt;<span style="color: #f5871f;">string</span>&gt;link-ssh-auth-sock&lt;/<span style="color: #f5871f;">string</span>&gt;
-  &lt;<span style="color: #f5871f;">key</span>&gt;ProgramArguments&lt;/<span style="color: #f5871f;">key</span>&gt;
-  &lt;<span style="color: #f5871f;">array</span>&gt;
-    &lt;<span style="color: #f5871f;">string</span>&gt;/bin/sh&lt;/<span style="color: #f5871f;">string</span>&gt;
-    &lt;<span style="color: #f5871f;">string</span>&gt;-c&lt;/<span style="color: #f5871f;">string</span>&gt;
-    &lt;<span style="color: #f5871f;">string</span>&gt;/bin/ln -sf $HOME/.gnupg/S.gpg-agent.ssh $SSH_AUTH_SOCK&lt;/<span style="color: #f5871f;">string</span>&gt;
-  &lt;/<span style="color: #f5871f;">array</span>&gt;
-  &lt;<span style="color: #f5871f;">key</span>&gt;RunAtLoad&lt;/<span style="color: #f5871f;">key</span>&gt;
-  &lt;<span style="color: #f5871f;">true</span>/&gt;
-&lt;/<span style="color: #f5871f;">dict</span>&gt;
-&lt;/<span style="color: #f5871f;">plist</span>&gt;
+&lt;plist version="1.0"&gt;
+&lt;dict&gt;
+  &lt;key&gt;Label&lt;/key&gt;
+  &lt;string&gt;link-ssh-auth-sock&lt;/string&gt;
+  &lt;key&gt;ProgramArguments&lt;/key&gt;
+  &lt;array&gt;
+    &lt;string&gt;/bin/sh&lt;/string&gt;
+    &lt;string&gt;-c&lt;/string&gt;
+    &lt;string&gt;/bin/ln -sf $HOME/.gnupg/S.gpg-agent.ssh $SSH_AUTH_SOCK&lt;/string&gt;
+  &lt;/array&gt;
+  &lt;key&gt;RunAtLoad&lt;/key&gt;
+  &lt;true/&gt;
+&lt;/dict&gt;
+&lt;/plist&gt;
 </pre>
 </div>
 
@@ -90,13 +90,13 @@ get stuck.  So I have the following script I keep in
 </p>
 
 <div class="org-src-container">
-<pre class="src src-shell"><span style="color: #8e908c; font-style: italic;">#</span><span style="color: #8e908c; font-style: italic;">!/bin/</span><span style="color: #718c00;">sh</span>
+<pre class="src src-shell">#!/bin/sh
 
-/bin/launchctl kickstart -k gui/${<span style="color: #eab700;">UID</span>}/homebrew.gpg.gpg-agent
-/bin/launchctl kickstart -k gui/${<span style="color: #eab700;">UID</span>}/link-ssh-auth-sock
+/bin/launchctl kickstart -k gui/${UID}/homebrew.gpg.gpg-agent
+/bin/launchctl kickstart -k gui/${UID}/link-ssh-auth-sock
 </pre>
 </div>
-<div class="taglist"><a href="https://hinman.github.io/tags.html">Tags</a>: <a href="https://hinman.github.io/tag-os_x.html">os_x</a> <a href="https://hinman.github.io/tag-yubikey.html">yubikey</a> </div></div>
+<div class="taglist"><a href="https://hinman.github.io/tags.html"><span class="tag-label">Tags</span></a><span class="tag-separator">: </span><span class="taglist__tags"><a href="https://hinman.github.io/tag-os_x.html" class="tag" data-tag="os_x" data-index="0">os_x</a> <a href="https://hinman.github.io/tag-yubikey.html" class="tag" data-tag="yubikey" data-index="1">yubikey</a> </span></div></div>
 <div id="postamble" class="status"><div id="archive">
   <a href="https://hinman.github.io/archive.html">Other posts</a>
 </div>
